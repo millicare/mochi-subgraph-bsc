@@ -1,0 +1,30 @@
+specVersion: 0.0.2
+description: MochiSwap Timelock contract
+repository: https://github.com/pancakeswap
+schema:
+  file: ./timelock.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Timelock
+    network: bsc
+    source:
+      address: '0xa4301B2c1c9c6A567DbeE419566A4737C40216eB'
+      abi: Timelock
+      startBlock: 6378360
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/timelock/index.ts
+      entities:
+        - Timelock
+      abis:
+        - name: Timelock
+          file: ../abis/Timelock.json
+      eventHandlers:
+        - event: CancelTransaction(indexed bytes32,indexed address,uint256,string,bytes,uint256)
+          handler: handleCanceledTransaction
+        - event: ExecuteTransaction(indexed bytes32,indexed address,uint256,string,bytes,uint256)
+          handler: handleExecutedTransaction
+        - event: QueueTransaction(indexed bytes32,indexed address,uint256,string,bytes,uint256)
+          handler: handleQueuedTransaction
